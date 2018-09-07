@@ -139,9 +139,26 @@ const Chart = (container, resetElementID) => {
                 },
                 labels: {
                     x: -40,
+                    formatter: function () {
+                        let label = this.axis.defaultLabelFormatter.call(this),
+                            base = "10",
+                            exponent,
+                            decimals;
+
+                        if (label.toString().includes(".")) {
+                            decimals = label.split(".")[1].length || 0;
+                            exponent = ("-" + decimals).sup();
+                        } else {
+                            decimals = label.split("e")[1];
+                            exponent = decimals.sup();
+                        }
+
+                        return base + exponent;
+                    },
                     style: {
                         fontSize: labelFontSize,
                     },
+                    useHTML: true,  //useHTML must be true for <sup></sup> tag to work!
                 },
                 gridLineWidth: 1,
                 tickLength: 35,
