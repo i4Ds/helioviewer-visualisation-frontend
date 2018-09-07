@@ -26,10 +26,11 @@ let chart
 
 const minDate = 1009843200000
 const maxDate = new Date().getTime()
+const minRange = 5 * 60 * 1000
 let fromDate = minDate
 let toDate = maxDate
 
-// use two stacks to save zoom boundary history 
+// use two stacks to save zoom boundary history
 let fromDateStack = [fromDate]
 let toDateStack = [toDate]
 
@@ -40,6 +41,14 @@ const afterSetExtremes = event => {
     if (event && "undefined" !== typeof event.userMin) {
         fromDate = Math.floor(event.userMin)
         toDate = Math.ceil(event.userMax)
+
+        let difference = toDate.valueOf() - fromDate.valueOf();
+
+        if (difference < minRange) {
+            let differenceFix = (minRange - difference) / 2;
+            fromDate = Math.floor(fromDate - differenceFix);
+            toDate = Math.floor(toDate + differenceFix);
+        }
     }
 
     fromDateStack.push(fromDate)
@@ -79,9 +88,11 @@ const Chart = (container, resetElementID) => {
         chart = Highcharts.chart(container, {
             chart: {
                 animation: false,
-                height: 300,
+                height: 400,
                 zoomType: 'x',
-                marginLeft: 150,
+                marginLeft: 120,
+                marginRight: 10,
+                zoomType: 'x',
                 resetZoomButton: {
                     theme: {
                         display: 'none'
@@ -89,15 +100,16 @@ const Chart = (container, resetElementID) => {
                 },
             },
             tooltip: {
-                enabled:false,
+                enabled: false,
                 crosshairs: {
                     color: 'green',
                     dashStyle: 'solid'
                 },
-            
+
                 shared: true
             },
             xAxis: {
+                minRange: minRange,
                 events: {
                     afterSetExtremes: afterSetExtremes
                 },
@@ -111,7 +123,7 @@ const Chart = (container, resetElementID) => {
              * day: '%d    .%m.%Y',
              * week: '%m.%Y',
              * month: '%m\'%Y',
-             *year: '%Y' 
+             *year: '%Y'
              */
                 },
                 labels: {
@@ -128,7 +140,7 @@ const Chart = (container, resetElementID) => {
                 min: 0.000000009,
                 /*
              *additional horizontal dividers in chart
-             *minorTickInterval: 0.1, 
+             *minorTickInterval: 0.1,
              */
                 title: {
                     text: 'X-ray Flux',
@@ -165,8 +177,8 @@ const Chart = (container, resetElementID) => {
                 plotBands: [
                     {
                         // A-Flare
-                        from: 0,
-                        to: 0.0000001,
+                        from: 0.0000001,
+                        to: 0.00000001,
                         color: 'rgba(40, 40, 40, 40)',
                         borderwidth: '100',
                         borderColor: '#FFFF',
@@ -182,8 +194,8 @@ const Chart = (container, resetElementID) => {
                     },
                     {
                         // B-Flare
-                        from: 0.0000001,
-                        to: 0.000001,
+                        from: 0.000001,
+                        to: 0.0000001,
                         color: 'rgba(0, 0, 0, 0)',
                         label: {
                             text: 'B',
@@ -197,8 +209,8 @@ const Chart = (container, resetElementID) => {
                     },
                     {
                         // C-Flare
-                        from: 0.000001,
-                        to: 0.00001,
+                        from: 0.00001,
+                        to: 0.000001,
                         color: 'rgba(40, 40, 40, 40)',
                         label: {
                             text: 'C',
@@ -212,8 +224,8 @@ const Chart = (container, resetElementID) => {
                     },
                     {
                         // M-Flare
-                        from: 0.00001,
-                        to: 0.0001,
+                        from: 0.0001,
+                        to: 0.00001,
                         // zIndex: 5,
                         color: 'rgba(0, 0, 0, 0)',
                         label: {
@@ -228,8 +240,8 @@ const Chart = (container, resetElementID) => {
                     },
                     {
                         // X-Flare
-                        from: 0.0001,
-                        to: 1000000000,
+                        from: 0.001,
+                        to: 0.0001,
                         color: 'rgba(40, 40, 40, 40)',
                         label: {
                             text: 'X',
@@ -265,9 +277,9 @@ const Chart = (container, resetElementID) => {
                                          this.y
                                  ) */
                                 if (Highcharts.dateFormat('%Y', this.x) < 2010) {
-                                    document.getElementById('preview').innerHTML = SolarImagePreview(Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x), Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SOHO', this.x, ), 'SOHO,EIT,EIT')
+                                    document.getElementById('preview').innerHTML = SolarImagePreview(Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x), Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SOHO', this.x), 'SOHO,EIT,EIT')
                                 } else {
-                                    document.getElementById('preview').innerHTML = SolarImagePreview(Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x), Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SDO ', this.x, ), 'SDO,AIA,AIA')
+                                    document.getElementById('preview').innerHTML = SolarImagePreview(Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x), Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SDO ', this.x), 'SDO,AIA,AIA')
                                 }
                             },
                         },
