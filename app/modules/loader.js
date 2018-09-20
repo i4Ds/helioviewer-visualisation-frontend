@@ -1,4 +1,4 @@
-// @todo implementation
+import Config from '../Config'
 
 /**
  * Load data from timeline API
@@ -7,11 +7,22 @@
  * @param {Date} to - End date for the requested timeline
  * @returns {*} Promise (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
  */
-
 export const timelineData = (from, to) => {
-    const url = 'http://86.119.41.48/api/?from=' + from + '&to=' + to + '&points=' + (2 * window.innerWidth)
-    
+    let localTimelineData = window.localStorage.getItem('timeline-json-data')
+    let initialData = from == Config.minDate && to == Config.maxDate
+
+    if (initialData && localTimelineData != undefined) {
+        return Promise.resolve(JSON.parse(localTimelineData))
+    }
+
+    const url = 'http://localhost:5000/api/?from=' + from + '&to=' + to + '&points=' + (2 * window.innerWidth)
+    console.log('server data: ' + url)
     return fetch(url)
         .then(response => response.json())
-        .then(json => json)
+        .then(json => {
+            if (initialData) {
+                window.localStorage.setItem('timeline-json-data', JSON.stringify(json))
+            }
+            return json;
+        })
 }

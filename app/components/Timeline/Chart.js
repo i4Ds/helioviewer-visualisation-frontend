@@ -4,10 +4,8 @@ import { Theme } from './Theme'
 import demoDateValues from './demoDateValues'
 import { timelineData } from '../../modules/loader'
 import SolarImagePreview from 'components/SolarImage'
+import Config from '../../Config'
 // import boost from 'highcharts/modules/boost'
-
-// boost(Highcharts)
-
 
 /**
  * Creates a highchart object
@@ -18,24 +16,19 @@ Highcharts.theme = Theme
 // Apply the theme
 Highcharts.setOptions(Highcharts.theme)
 
-const labelFontSize = '11pt'
-const labelColor = '#E0E0E3'
 var labelFluxXPosition = -20
 
 let chart
-
-const minDate = 1009843200000
-const maxDate = new Date().getTime()
-const minRange = 5 * 60 * 1000
-let fromDate = minDate
-let toDate = maxDate
+let loadingData = false
+let fromDate = Config.minDate
+let toDate = Config.maxDate
 
 // use two stacks to save zoom boundary history
-let fromDateStack = [fromDate]
-let toDateStack = [toDate]
-
+let fromDateStack = []
+let toDateStack = []
 
 const afterSetExtremes = event => {
+    loadingData = true
     chart.showLoading('Loading data from server...')
 
     if (event && "undefined" !== typeof event.userMin) {
@@ -44,34 +37,57 @@ const afterSetExtremes = event => {
 
         let difference = toDate.valueOf() - fromDate.valueOf();
 
-        if (difference < minRange) {
-            let differenceFix = (minRange - difference) / 2;
+        if (difference < Config.minRange) {
+            let differenceFix = (Config.minRange - difference) / 2;
             fromDate = Math.floor(fromDate - differenceFix);
             toDate = Math.floor(toDate + differenceFix);
         }
     }
 
-    fromDateStack.push(fromDate)
-    toDateStack.push(toDate)
+    addZoomToStack(fromDate, toDate)
 
     timelineData(fromDate, toDate).then(data => {
         chart.series[0].setData(data, true)
     }).then(() => {
+        loadingData = false
         chart.hideLoading()
     })
+
 }
 
+const isZoomedIn = () => {
+    if (fromDateStack.length == 0 && toDateStack.length == 0) {
+        return false
+    }
+    return true
+}
 
+const addZoomToStack = (from, to) => {
+    fromDateStack.push(from)
+    toDateStack.push(to)
+}
+
+const removeZoomFromStack = () => {
+    fromDateStack.pop()
+    toDateStack.pop()
+    return [
+        fromDateStack.pop(),
+        toDateStack.pop()
+    ]
+}
 
 const resetZoom = () => {
-    if (1 < fromDateStack.length) {
-        fromDateStack.pop()
-        toDateStack.pop()
-        fromDate = fromDateStack.pop()
-        toDate = toDateStack.pop()
+    if (!isZoomedIn() || loadingData) {
+        return false
+    }
+
+    if (fromDateStack.length > 1) {
+        [fromDate, toDate] = removeZoomFromStack()
     } else {
-        fromDate = minDate
-        toDate = maxDate
+        fromDate = Config.minDate
+        toDate = Config.maxDate
+        fromDateStack = []
+        toDateStack = []
     }
 
     chart.xAxis[0].setExtremes(fromDate, toDate, true)
@@ -79,10 +95,62 @@ const resetZoom = () => {
     return false
 }
 
+const moveBack = () => {
+    if (loadingData) {
+        return false
+    }
 
+    if (!isZoomedIn()) {
+        alert('Cannot move back when zoomed out!')
+        return false
+    }
 
-const Chart = (container, resetElementID) => {
+    let zoom = toDate - fromDate
+    zoom -= zoom * 0.2
+
+    toDate -= zoom
+    fromDate -= zoom
+
+    if (fromDate < Config.minDate) {
+        alert('Cannot move back anymore because there is no more data available, try to zoom in and then move back.')
+        return false
+    }
+
+    chart.xAxis[0].setExtremes(fromDate, toDate, true)
+
+    return false
+}
+
+const moveForward = () => {
+    if (loadingData) {
+        return false
+    }
+
+    if (!isZoomedIn()) {
+        alert('Cannot move forward when zoomed out!')
+        return false
+    }
+
+    let zoom = toDate - fromDate
+    zoom -= zoom * 0.2
+
+    toDate += zoom
+    fromDate += zoom
+
+    if (toDate > Config.maxDate) {
+        alert('Cannot move forward anymore because there is no more data available, try to zoom in and then move forward.')
+        return false
+    }
+
+    chart.xAxis[0].setExtremes(fromDate, toDate, true)
+
+    return false
+}
+
+const Chart = (container, resetElementID, moveBackElementID, moveForwardElementID) => {
     document.getElementById(resetElementID).onclick = resetZoom
+    document.getElementById(moveBackElementID).onclick = moveBack
+    document.getElementById(moveForwardElementID).onclick = moveForward
 
     return timelineData(fromDate, toDate).then(data =>
         chart = Highcharts.chart(container, {
@@ -109,7 +177,7 @@ const Chart = (container, resetElementID) => {
                 shared: true
             },
             xAxis: {
-                minRange: minRange,
+                minRange: Config.minRange,
                 events: {
                     afterSetExtremes: afterSetExtremes
                 },
@@ -128,7 +196,7 @@ const Chart = (container, resetElementID) => {
                 },
                 labels: {
                     style: {
-                        fontSize: labelFontSize,
+                        fontSize: Config.labelFontSize,
                     },
                 },
             },
@@ -168,7 +236,7 @@ const Chart = (container, resetElementID) => {
                         return base + exponent;
                     },
                     style: {
-                        fontSize: labelFontSize,
+                        fontSize: Config.labelFontSize,
                     },
                     useHTML: true,  //useHTML must be true for <sup></sup> tag to work!
                 },
@@ -186,9 +254,9 @@ const Chart = (container, resetElementID) => {
                             text: 'A',
                             x: labelFluxXPosition,
                             style: {
-                                color: labelColor,
+                                color: Config.labelColor,
                                 fontWeight: 'bold',
-                                fontSize: labelFontSize,
+                                fontSize: Config.labelFontSize,
                             },
                         },
                     },
@@ -201,9 +269,9 @@ const Chart = (container, resetElementID) => {
                             text: 'B',
                             x: labelFluxXPosition,
                             style: {
-                                color: labelColor,
+                                color: Config.labelColor,
                                 fontWeight: 'bold',
-                                fontSize: labelFontSize,
+                                fontSize: Config.labelFontSize,
                             },
                         },
                     },
@@ -216,9 +284,9 @@ const Chart = (container, resetElementID) => {
                             text: 'C',
                             x: labelFluxXPosition,
                             style: {
-                                color: labelColor,
+                                color: Config.labelColor,
                                 fontWeight: 'bold',
-                                fontSize: labelFontSize,
+                                fontSize: Config.labelFontSize,
                             },
                         },
                     },
@@ -232,9 +300,9 @@ const Chart = (container, resetElementID) => {
                             text: 'M',
                             x: labelFluxXPosition,
                             style: {
-                                color: labelColor,
+                                color: Config.labelColor,
                                 fontWeight: 'bold',
-                                fontSize: labelFontSize,
+                                fontSize: Config.labelFontSize,
                             },
                         },
                     },
@@ -247,9 +315,9 @@ const Chart = (container, resetElementID) => {
                             text: 'X',
                             x: labelFluxXPosition,
                             style: {
-                                color: labelColor,
+                                color: Config.labelColor,
                                 fontWeight: 'bold',
-                                fontSize: labelFontSize,
+                                fontSize: Config.labelFontSize,
                             },
                         },
                     },

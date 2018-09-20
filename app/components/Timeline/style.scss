@@ -1,5 +1,4 @@
 @import 'theme/__variables';
-
 .chart {
     //height: 200px;
     //min-height: 100px;
@@ -14,10 +13,9 @@
     z-index: 1;
 }
 
-.zoom {
+%base-button {
     position: absolute;
     top: 0;
-    right: 11px;
     padding: 0.2em 0.4em;
     border: 1px solid lightblue;
     color: lightblue;
@@ -25,13 +23,26 @@
     cursor: pointer;
     transition: all 200ms;
     text-decoration: none;
-
     &:hover {
         color: black;
         background: lightblue;
     }
-
     &:active {
         box-shadow: 0 0 0 3px rgba(173, 216, 230, 0.5);
     }
+}
+
+.zoom {
+    @extend %base-button;
+    right: 11px;
+}
+
+.forward {
+    @extend %base-button;
+    right: 150px;
+}
+
+.back {
+    @extend %base-button;
+    right: 270px;
 }
