@@ -19,6 +19,7 @@ Highcharts.setOptions(Highcharts.theme)
 var labelFluxXPosition = -20
 
 let chart
+let moving = false
 let loadingData = false
 let fromDate = Config.minDate
 let toDate = Config.maxDate
@@ -44,7 +45,9 @@ const afterSetExtremes = event => {
         }
     }
 
-    addZoomToStack(fromDate, toDate)
+    if (!moving) {
+        addZoomToStack(fromDate, toDate)
+    }
 
     timelineData(fromDate, toDate).then(data => {
         chart.series[0].setData(data, true)
@@ -115,8 +118,9 @@ const moveBack = () => {
         alert('Cannot move back anymore because there is no more data available, try to zoom in and then move back.')
         return false
     }
-
+    moving = true
     chart.xAxis[0].setExtremes(fromDate, toDate, true)
+    moving = false
 
     return false
 }
@@ -142,7 +146,9 @@ const moveForward = () => {
         return false
     }
 
+    moving = true
     chart.xAxis[0].setExtremes(fromDate, toDate, true)
+    moving = false
 
     return false
 }
