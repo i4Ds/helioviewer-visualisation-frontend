@@ -11,17 +11,14 @@ const buildDirectory = path.join(__dirname, './dist')
 
 const sassThreadLoader = require('thread-loader')
 
-sassThreadLoader.warmup({
-    workerParallelJobs: 2
-}, [
-        'sass-loader',
-        'postcss-loader',
-        'css-loader',
-        'style-loader',
-        'babel-loader',
-    ])
+sassThreadLoader.warmup(
+    {
+        workerParallelJobs: 2,
+    },
+    ['sass-loader', 'postcss-loader', 'css-loader', 'style-loader', 'babel-loader']
+)
 
-module.exports = function (env) {
+module.exports = env => {
     const nodeEnv = env && env.prod ? 'production' : 'development'
     const isProd = nodeEnv === 'production'
     const serviceWorkerBuild = env && env.sw
@@ -50,12 +47,11 @@ module.exports = function (env) {
         }),
     ]
 
-
     if (isProd) {
         plugins.push(
             // create css bundle
             new ExtractTextPlugin('style-[sha512:contenthash:base64:8].css'),
-            new webpack.HashedModuleIdsPlugin(),
+            new webpack.HashedModuleIdsPlugin()
         )
 
         cssLoader = ExtractTextPlugin.extract({
@@ -90,7 +86,7 @@ module.exports = function (env) {
     } else {
         plugins.push(
             // make hot reloading work
-            new webpack.HotModuleReplacementPlugin(),
+            new webpack.HotModuleReplacementPlugin()
         )
 
         cssLoader = [
@@ -125,7 +121,7 @@ module.exports = function (env) {
         ]
     }
 
-    if (serviceWorkerBuild) {
+    if (serviceWorkerBuild)
         plugins.push(
             new SWPrecacheWebpackPlugin({
                 cacheId: 'heliovis-timeline',
@@ -133,19 +129,20 @@ module.exports = function (env) {
                 maximumFileSizeToCacheInBytes: 800000,
                 mergeStaticsConfig: true,
                 minify: true,
-                runtimeCaching: [{
-                    handler: 'cacheFirst',
-                    urlPattern: /(.*?)/,
-                },],
+                runtimeCaching: [
+                    {
+                        handler: 'cacheFirst',
+                        urlPattern: /(.*?)/,
+                    },
+                ],
             })
-        );
-    }
+        )
 
     return {
         mode: nodeEnv,
         context: sourcePath,
         entry: {
-            main: './index.js'
+            main: './index.js',
         },
 
         output: {
@@ -189,7 +186,7 @@ module.exports = function (env) {
                         'babel-loader',
                     ],
                 },
-            ]
+            ],
         },
 
         resolve: {
@@ -207,14 +204,13 @@ module.exports = function (env) {
         },
 
         devServer: {
-            // https: true,
             contentBase: ['./app'],
             publicPath: '/',
             historyApiFallback: true,
-            port: port,
-            host: host,
+            port,
+            host,
             hot: !isProd,
-            compress: isProd
-        }
+            compress: isProd,
+        },
     }
 }

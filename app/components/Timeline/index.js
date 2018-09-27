@@ -10,6 +10,6 @@ const moveForwardId = 'move-forward'
  *
  * @returns {string} The timeline HTML
  */
-const TimelineMarkup = () => `<div class="${style.zoombar}"><a id="${zoomBackId}" class="${style.zoom}" href="#">Step back</a><a id="${moveBackId}" class="${style.back}" href="#">Move Back</a><a id="${moveForwardId}" class="${style.forward}" href="#">Move Forward</a></div><div id="${style.chart}"></div>`
-export const Timeline = () => Chart(style.chart, zoomBackId, moveBackId, moveForwardId)
+const TimelineMarkup = () => `<div class="${style.chart}" id="${style.chart}"></div>`
+export const Timeline = () => Chart(style.chart)
 export default TimelineMarkup

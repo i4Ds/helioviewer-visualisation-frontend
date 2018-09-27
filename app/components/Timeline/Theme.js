@@ -13,7 +13,7 @@ export const Theme = {
         '#aaeeee',
     ],
     chart: {
-        backgroundColor: '#0000',
+        backgroundColor: 'black',
         style: {
             fontFamily: '\'Unica One\', sans-serif',
         },

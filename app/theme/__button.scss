@@ -1,0 +1,21 @@
+@import './__variables';
+
+%base-button {
+    display: block;
+    font-size: $font-default-size;
+    margin: 0.2em;
+    border: 1px solid $color-secondary-light;
+    color: $color-secondary-light;
+    border-radius: 0.1em;
+    cursor: pointer;
+    transition: all 200ms;
+    text-decoration: none;
+    text-align: center;
+    &:hover {
+        color: $color-secondary-dark;
+        background: $color-secondary-light;
+    }
+    &:active {
+        box-shadow: 0 0 0 3px $color-secondary-dark;
+    }
+}

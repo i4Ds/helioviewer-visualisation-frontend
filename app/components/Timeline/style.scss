@@ -1,48 +1,8 @@
-@import 'theme/__variables';
+@import '../../theme/__variables';
+@import '../../theme/_button';
+
 .chart {
-    //height: 200px;
-    //min-height: 100px;
-    width: 100vw;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-}
-
-.zoombar {
-    position: relative;
-    z-index: 1;
-}
-
-%base-button {
-    position: absolute;
-    top: 0;
-    padding: 0.2em 0.4em;
-    border: 1px solid lightblue;
-    color: lightblue;
-    border-radius: 0.1em;
-    cursor: pointer;
-    transition: all 200ms;
-    text-decoration: none;
-    &:hover {
-        color: black;
-        background: lightblue;
-    }
-    &:active {
-        box-shadow: 0 0 0 3px rgba(173, 216, 230, 0.5);
-    }
-}
-
-.zoom {
-    @extend %base-button;
-    right: 11px;
-}
-
-.forward {
-    @extend %base-button;
-    right: 150px;
-}
-
-.back {
-    @extend %base-button;
-    right: 270px;
+    min-width: 100vw;
+    max-height: 50vh;
+    padding-top: 1em;
 }
