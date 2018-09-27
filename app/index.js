@@ -1,9 +1,8 @@
-// import 'modules/loader'
-
 import SolarImagePreview from 'components/SolarImage'
 
 import TimelineMarkup, { Timeline } from 'components/Timeline'
 
+import './theme/highcharts.scss'
 import 'theme/main.scss'
 
 // Format current date

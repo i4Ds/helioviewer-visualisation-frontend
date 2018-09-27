@@ -8,7 +8,9 @@ Helvetica,
 Arial,
 sans-serif;
 
-$font-default-size: 14pt;
+$font-size-big: 18pt;
+$font-size-default: 14pt;
+$font-size-small: 10pt;
 
 // colors
 $color-background: black;
@@ -26,22 +28,6 @@ $color-secondary-dark: #0288D1;
 $color-secondary-text: #FFFFFF;
 $color-secondary-accent: #FFC107;
 $color-secondary-divider: #BDBDBD;
-
-$color-chart-background: $color-background;
-$color-chart: #009688;
-$color-chart-light: #0E1E3E;
-$color-chart-dark: black;
-$color-chart-text: #FFFFFF;
-$color-chart-accent: #3875F4;
-$color-chart-divider: #CDDDF2;
-$color-chart-tooltip-background: rgba(0, 0, 0, 0.90);
-$color-chart-credits: rgba(255, 255, 255, 0.2);
-$font-chart-default: $font-default;
-$font-size-chart-title: 16pt;
-$font-size-chart-subtitle: 15pt;
-$font-size-chart-default: $font-default-size;
-$font-size-chart-label: 12pt;
-$font-size-chart-label-small: 10pt;
 
 // sizes
 $phone: 0em;
@@ -72,43 +58,4 @@ $desktop: 66em;
     @media (min-width: $desktop) {
         @content;
     }
-}
-
-
-//variable export for js
-:export {
-    fontDefault: $font-default;
-    fontDefaultSize: $font-default-size;
-
-    colorBackground: $color-background;
-
-    colorPrimary: $color-primary;
-    colorPrimaryLight: $color-primary-light;
-    colorPrimaryDark: $color-primary-dark;
-    colorPrimaryText: $color-primary-text;
-    colorPrimaryAccent: $color-primary-accent;
-    colorPrimaryDivider: $color-primary-divider;
-
-    colorSecondary: $color-secondary;
-    colorSecondaryLight: $color-secondary-light;
-    colorSecondaryDark: $color-secondary-dark;
-    colorSecondaryText: $color-secondary-text;
-    colorSecondaryAccent: $color-secondary-accent;
-    colorSecondaryDivider: $color-secondary-divider;
-
-    colorChartBackground: $color-chart-background;
-    colorChart: $color-chart;
-    colorChartLight: $color-chart-light;
-    colorChartDark: $color-chart-dark;
-    colorChartText: $color-chart-text;
-    colorChartAccent: $color-chart-accent;
-    colorChartDivider: $color-chart-divider;
-    colorChartTooltipBackground: $color-chart-tooltip-background;
-    colorChartCredits: $color-chart-credits;
-    fontChartDefault: $font-chart-default;
-    fontSizeChartTitle: $font-size-chart-title;
-    fontSizeChartSubtitle: $font-size-chart-subtitle;
-    fontSizeChartDefault: $font-size-chart-default;
-    fontSizeChartLabel: $font-size-chart-label;
-    fontSizeChartLabelSmall: $font-size-chart-label-small;
 }

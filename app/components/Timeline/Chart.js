@@ -1,18 +1,10 @@
-import Highcharts from 'highcharts'
+import Highcharts from 'highcharts/js/highcharts'
 import Exporting from 'highcharts/modules/exporting'
 import style from './style'
-import { Theme } from './Theme'
-import { timelineData } from '../../modules/loader'
+import {timelineData} from '../../modules/loader'
 import SolarImagePreview from 'components/SolarImage'
 import Config from '../../Config'
 
-/**
- * Creates a highchart object
- * @param {string} container - The ID for the highcharts container
- * @returns {*} Highchart element (I think. I have some reading to do...)
- */
-Highcharts.theme = Theme
-Highcharts.setOptions(Highcharts.theme)
 Exporting(Highcharts)
 
 const labelFluxXPosition = -20
@@ -74,8 +66,9 @@ const removeZoomFromStack = () => {
 const resetZoom = () => {
     if (!isZoomedIn() || loadingData) return false
 
-    if (fromDateStack.length > 1) [fromDate, toDate] = removeZoomFromStack()
-    else {
+    if (fromDateStack.length > 1) {
+        [fromDate, toDate] = removeZoomFromStack()
+    } else {
         fromDate = Config.minDate
         toDate = Config.maxDate
         fromDateStack = []
@@ -128,7 +121,7 @@ const moveForward = () => {
 
     if (toDate > Config.maxDate) {
         alert(
-            'Cannot move forward anymore because there is no more data available, try to zoom in and then move forward.'
+            'Cannot move forward anymore because there is no more data available, try to zoom in and then move forward.',
         )
         return false
     }
@@ -150,11 +143,6 @@ const Chart = container => {
                     marginLeft: 120,
                     marginRight: 10,
                     zoomType: 'x',
-                    resetZoomButton: {
-                        theme: {
-                            display: 'none',
-                        },
-                    },
                 },
                 tooltip: {
                     enabled: false,
@@ -211,11 +199,6 @@ const Chart = container => {
                             label: {
                                 text: 'A',
                                 x: labelFluxXPosition,
-                                style: {
-                                    color: style.colorChartText,
-                                    fontWeight: 'bold',
-                                    fontSize: style.fontSizeChartLabel,
-                                },
                             },
                         },
                         {
@@ -226,11 +209,6 @@ const Chart = container => {
                             label: {
                                 text: 'B',
                                 x: labelFluxXPosition,
-                                style: {
-                                    color: style.colorChartText,
-                                    fontWeight: 'bold',
-                                    fontSize: style.fontSizeChartLabel,
-                                },
                             },
                         },
                         {
@@ -241,11 +219,6 @@ const Chart = container => {
                             label: {
                                 text: 'C',
                                 x: labelFluxXPosition,
-                                style: {
-                                    color: style.colorChartText,
-                                    fontWeight: 'bold',
-                                    fontSize: style.fontSizeChartLabel,
-                                },
                             },
                         },
                         {
@@ -256,11 +229,6 @@ const Chart = container => {
                             label: {
                                 text: 'M',
                                 x: labelFluxXPosition,
-                                style: {
-                                    color: style.colorChartText,
-                                    fontWeight: 'bold',
-                                    fontSize: style.fontSizeChartLabel,
-                                },
                             },
                         },
                         {
@@ -271,11 +239,6 @@ const Chart = container => {
                             label: {
                                 text: 'X',
                                 x: labelFluxXPosition,
-                                style: {
-                                    color: style.colorChartText,
-                                    fontWeight: 'bold',
-                                    fontSize: style.fontSizeChartLabel,
-                                },
                             },
                         },
                     ],
@@ -298,18 +261,19 @@ const Chart = container => {
                         point: {
                             events: {
                                 click() {
-                                    if (Highcharts.dateFormat('%Y', this.x) < 2010)
+                                    if (Highcharts.dateFormat('%Y', this.x) < 2010) {
                                         document.getElementById('preview').innerHTML = SolarImagePreview(
                                             Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
                                             Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SOHO', this.x),
-                                            'SOHO,EIT,EIT'
+                                            'SOHO,EIT,EIT',
                                         )
-                                    else
+                                    } else {
                                         document.getElementById('preview').innerHTML = SolarImagePreview(
                                             Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
                                             Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SDO ', this.x),
-                                            'SDO,AIA,AIA'
+                                            'SDO,AIA,AIA',
                                         )
+                                    }
                                 },
                             },
                         },
@@ -325,21 +289,6 @@ const Chart = container => {
                     buttons: [
                         {
                             text: 'Zoom Out',
-                            className: 'zoom-out-button',
-                            theme: {
-                                color: style.colorSecondaryLight,
-                                fill: 'none',
-                                stroke: style.colorSecondaryLight,
-                                states: {
-                                    hover: {
-                                        color: style.colorSecondaryText,
-                                        fill: style.colorSecondaryLight,
-                                    },
-                                    active: {
-                                        'box-shadow': `0 0 0 3px ${style.colorSecondaryDark}`,
-                                    },
-                                },
-                            },
                             onclick() {
                                 resetZoom()
                             },

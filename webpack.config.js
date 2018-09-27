@@ -47,43 +47,43 @@ module.exports = env => {
         }),
     ]
 
-    if (isProd) {
+    let cssLoader = ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: [
+            'cache-loader',
+            {
+                loader: 'thread-loader',
+                options: {
+                    workerParallelJobs: 2,
+                },
+            },
+            {
+                loader: 'css-loader',
+                options: {
+                    module: true, // css-loader 0.14.5 compatible
+                    modules: true,
+                    importLoaders: 1,
+                    localIdentName: '[hash:base64:5]',
+                },
+            },
+            {
+                loader: 'sass-loader',
+                options: {
+                    outputStyle: 'collapsed',
+                    sourceMap: true,
+                    includePaths: [sourcePath],
+                },
+            },
+        ],
+    })
+
+    if (isProd)
         plugins.push(
             // create css bundle
             new ExtractTextPlugin('style-[sha512:contenthash:base64:8].css'),
             new webpack.HashedModuleIdsPlugin()
         )
-
-        cssLoader = ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: [
-                'cache-loader',
-                {
-                    loader: 'thread-loader',
-                    options: {
-                        workerParallelJobs: 2,
-                    },
-                },
-                {
-                    loader: 'css-loader',
-                    options: {
-                        module: true, // css-loader 0.14.5 compatible
-                        modules: true,
-                        importLoaders: 1,
-                        localIdentName: '[hash:base64:5]',
-                    },
-                },
-                {
-                    loader: 'sass-loader',
-                    options: {
-                        outputStyle: 'collapsed',
-                        sourceMap: true,
-                        includePaths: [sourcePath],
-                    },
-                },
-            ],
-        })
-    } else {
+    else {
         plugins.push(
             // make hot reloading work
             new webpack.HotModuleReplacementPlugin()

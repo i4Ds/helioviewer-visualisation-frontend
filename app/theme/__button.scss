@@ -2,7 +2,7 @@
 
 %base-button {
     display: block;
-    font-size: $font-default-size;
+    font-size: $font-size-default;
     margin: 0.2em;
     border: 1px solid $color-secondary-light;
     color: $color-secondary-light;
@@ -16,6 +16,6 @@
         background: $color-secondary-light;
     }
     &:active {
-        box-shadow: 0 0 0 3px $color-secondary-dark;
+        box-shadow: 0 0 0 1px $color-secondary-dark;
     }
 }
