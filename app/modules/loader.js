@@ -10,10 +10,13 @@ import Config from '../Config'
 export const timelineData = (from, to) => {
     let localTimelineData = window.localStorage.getItem('timeline-json-data')
     let initialData = from === Config.minDate && to === Config.maxDate
+    let useLocalData = initialData && localTimelineData !== undefined && localTimelineData !== null
 
-    if (initialData && localTimelineData !== undefined) return Promise.resolve(JSON.parse(localTimelineData))
+    if (useLocalData) return Promise.resolve(JSON.parse(localTimelineData))
 
-    const url = 'http://localhost:5000/api/?from=' + from + '&to=' + to + '&points=' + 2 * window.innerWidth
+    console.log('before assigning url')
+
+    const url = 'http://86.119.41.48/api/?from=' + from + '&to=' + to + '&points=' + 2 * window.innerWidth
     console.log('server data: ' + url)
     return fetch(url)
         .then(response => response.json())

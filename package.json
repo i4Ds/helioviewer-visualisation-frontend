@@ -1,5 +1,5 @@
 {
-  "name": "helioviewer_timeline1",
+  "name": "helioviewer_timeline",
   "version": "0.0.1",
   "description": "Frontend for helioviewer timeline",
   "main": "index.ejs",
@@ -13,7 +13,7 @@
     "test:watch": "jest --watch",
     "coverage": "jest --coverage"
   },
-  "repository": "https://github.com/stby4/helioviewer-visualisation-frontend.git",
+  "repository": "https://github.com/i4Ds/helioviewer-visualisation-frontend.git",
   "author": "Hinrich Kaestner <hinrich.kaestner@gmail.com>",
   "license": "MPL-2.0",
   "private": false,

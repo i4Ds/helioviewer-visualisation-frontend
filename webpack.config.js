@@ -147,7 +147,7 @@ module.exports = env => {
 
         output: {
             path: buildDirectory,
-            publicPath: '/',
+            publicPath: './',
             filename: isProd ? '[name]-[hash:8].js' : '[name].js',
             chunkFilename: isProd ? '[name]-[chunkhash:8].js' : '[name].js',
         },
