@@ -1,13 +1,12 @@
 import Highcharts from 'highcharts/js/highcharts'
 import Exporting from 'highcharts/modules/exporting'
-import style from './style'
 import { timelineData } from '../../modules/loader'
 import SolarImagePreview from 'components/SolarImage'
 import Config from '../../Config'
 
 Exporting(Highcharts)
 
-const labelFluxXPosition = -20
+const labelFluxXPosition = -25
 
 let chart
 let moving = false
@@ -167,7 +166,7 @@ const Chart = container => {
                         x: 0,
                     },
                     labels: {
-                        x: -30,
+                        x: -45,
                         formatter() {
                             let label = this.axis.defaultLabelFormatter.call(this),
                                 base = '10',
@@ -194,9 +193,7 @@ const Chart = container => {
                             // A-Flare
                             from: 0.0000001,
                             to: 0.00000001,
-                            color: style.colorChartLight,
-                            borderwidth: '100',
-                            borderColor: '#FFFF',
+                            className: 'heliotime-flare-a',
                             label: {
                                 text: 'A',
                                 x: labelFluxXPosition,
@@ -206,7 +203,7 @@ const Chart = container => {
                             // B-Flare
                             from: 0.000001,
                             to: 0.0000001,
-                            color: style.colorChartDark,
+                            className: 'heliotime-flare-b',
                             label: {
                                 text: 'B',
                                 x: labelFluxXPosition,
@@ -216,7 +213,7 @@ const Chart = container => {
                             // C-Flare
                             from: 0.00001,
                             to: 0.000001,
-                            color: style.colorChartLight,
+                            className: 'heliotime-flare-c',
                             label: {
                                 text: 'C',
                                 x: labelFluxXPosition,
@@ -226,7 +223,7 @@ const Chart = container => {
                             // M-Flare
                             from: 0.0001,
                             to: 0.00001,
-                            color: style.colorChartDark,
+                            className: 'heliotime-flare-m',
                             label: {
                                 text: 'M',
                                 x: labelFluxXPosition,
@@ -236,7 +233,7 @@ const Chart = container => {
                             // X-Flare
                             from: 0.001,
                             to: 0.0001,
-                            color: style.colorChartLight,
+                            className: 'heliotime-flare-x',
                             label: {
                                 text: 'X',
                                 x: labelFluxXPosition,

@@ -1,0 +1,34 @@
+@import "./__variables";
+
+$fill-opacity: 0.25;
+
+.heliotime-flare-a {
+    fill: $color-primary !important;
+    fill-opacity: $fill-opacity !important;
+}
+
+.heliotime-flare-b {
+    fill: $color-secondary!important;
+    fill-opacity: $fill-opacity !important;
+}
+
+.heliotime-flare-c {
+    fill: $color-primary !important;
+    fill-opacity: $fill-opacity !important;
+}
+
+.heliotime-flare-m {
+    fill: $color-secondary !important;
+    fill-opacity: $fill-opacity !important;
+}
+
+.heliotime-flare-x {
+    fill: $color-primary !important;
+    fill-opacity: $fill-opacity !important;
+}
+
+.highcharts-plot-band-label {
+    fill: $color-primary-text;
+    font-size: $font-size-medium;
+    text-align: center;
+}
