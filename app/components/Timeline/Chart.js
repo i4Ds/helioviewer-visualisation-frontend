@@ -1,7 +1,7 @@
 import Highcharts from 'highcharts/js/highcharts'
 import Exporting from 'highcharts/modules/exporting'
 import style from './style'
-import {timelineData} from '../../modules/loader'
+import { timelineData } from '../../modules/loader'
 import SolarImagePreview from 'components/SolarImage'
 import Config from '../../Config'
 
@@ -66,9 +66,8 @@ const removeZoomFromStack = () => {
 const resetZoom = () => {
     if (!isZoomedIn() || loadingData) return false
 
-    if (fromDateStack.length > 1) {
-        [fromDate, toDate] = removeZoomFromStack()
-    } else {
+    if (fromDateStack.length > 1) [fromDate, toDate] = removeZoomFromStack()
+    else {
         fromDate = Config.minDate
         toDate = Config.maxDate
         fromDateStack = []
@@ -121,7 +120,7 @@ const moveForward = () => {
 
     if (toDate > Config.maxDate) {
         alert(
-            'Cannot move forward anymore because there is no more data available, try to zoom in and then move forward.',
+            'Cannot move forward anymore because there is no more data available, try to zoom in and then move forward.'
         )
         return false
     }
@@ -145,6 +144,7 @@ const Chart = container => {
                     zoomType: 'x',
                 },
                 tooltip: {
+                    crosshairs: [true, false],
                     enabled: false,
                     shared: true,
                 },
@@ -167,7 +167,7 @@ const Chart = container => {
                         x: 0,
                     },
                     labels: {
-                        x: -40,
+                        x: -30,
                         formatter() {
                             let label = this.axis.defaultLabelFormatter.call(this),
                                 base = '10',
@@ -188,6 +188,7 @@ const Chart = container => {
                     },
                     gridLineWidth: 1,
                     tickLength: 35,
+                    tickInterval: 1,
                     plotBands: [
                         {
                             // A-Flare
@@ -261,19 +262,18 @@ const Chart = container => {
                         point: {
                             events: {
                                 click() {
-                                    if (Highcharts.dateFormat('%Y', this.x) < 2010) {
+                                    if (Highcharts.dateFormat('%Y', this.x) < 2010)
                                         document.getElementById('preview').innerHTML = SolarImagePreview(
                                             Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
                                             Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SOHO', this.x),
-                                            'SOHO,EIT,EIT',
+                                            'SOHO,EIT,EIT'
                                         )
-                                    } else {
+                                    else
                                         document.getElementById('preview').innerHTML = SolarImagePreview(
                                             Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
                                             Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SDO ', this.x),
-                                            'SDO,AIA,AIA',
+                                            'SDO,AIA,AIA'
                                         )
-                                    }
                                 },
                             },
                         },
