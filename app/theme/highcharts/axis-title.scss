@@ -1,0 +1,19 @@
+.highcharts-axis-title {
+    fill: $color-secondary-text;
+
+    @include for-phone-up {
+        font-size: $font-size-tiny;
+    }
+
+    @include for-tablet-portrait-up {
+        font-size: $font-size-small;
+    }
+
+    @include for-tablet-landscape-up {
+        font-size: $font-size-small;
+    }
+
+    @include for-desktop-up {
+        font-size: $font-size-medium;
+    }
+}

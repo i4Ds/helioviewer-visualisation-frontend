@@ -304,6 +304,22 @@ const Chart = container => {
                         },
                     ],
                 },
+                responsive: {
+                    rules: [
+                        {
+                            condition: {
+                                maxWidth: 500,
+                            },
+                            chartOptions: {
+                                chart: {
+                                    height: 300,
+                                    marginLeft: 100,
+                                    marginRight: 5,
+                                },
+                            },
+                        },
+                    ],
+                },
             }))
     )
 }

@@ -1,5 +1,5 @@
 @import "./__variables";
-@import "./plot-bands";
+@import "./highcharts/plot-bands";
 
 $colors: #1976D2 !default;
 
@@ -141,10 +141,7 @@ $scrollbar-track-border: $neutral-color-5 !default;
 }
 
 /* Titles */
-.highcharts-title {
-    fill: $color-secondary-text;
-    font-size: $font-size-big;
-}
+@import "./highcharts/title";
 
 .highcharts-subtitle {
     fill: $neutral-color-60;
@@ -160,15 +157,9 @@ $scrollbar-track-border: $neutral-color-5 !default;
     stroke-width: 0;
 }
 
-.highcharts-axis-title {
-    fill: $color-secondary-text;
-}
+@import "./highcharts/axis-title";
 
-.highcharts-axis-labels {
-    fill: $color-secondary-text;
-    cursor: default;
-    font-size: $font-size-small;
-}
+@import "./highcharts/axis-labels";
 
 .highcharts-grid-line {
     fill: none;

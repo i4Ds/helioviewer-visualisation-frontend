@@ -14,10 +14,7 @@ export const timelineData = (from, to) => {
 
     if (useLocalData) return Promise.resolve(JSON.parse(localTimelineData))
 
-    console.log('before assigning url')
-
     const url = 'http://147.86.8.82/api/?from=' + from + '&to=' + to + '&points=' + 2 * window.innerWidth
-    console.log('server data: ' + url)
     return fetch(url)
         .then(response => response.json())
         .then(json => {

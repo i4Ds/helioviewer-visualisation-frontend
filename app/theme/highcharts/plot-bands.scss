@@ -1,4 +1,4 @@
-@import "./__variables";
+@import "../_variables";
 
 $fill-opacity: 0.25;
 
@@ -8,7 +8,7 @@ $fill-opacity: 0.25;
 }
 
 .heliotime-flare-b {
-    fill: $color-secondary!important;
+    fill: $color-secondary !important;
     fill-opacity: $fill-opacity !important;
 }
 
@@ -29,6 +29,21 @@ $fill-opacity: 0.25;
 
 .highcharts-plot-band-label {
     fill: $color-primary-text;
-    font-size: $font-size-medium;
     text-align: center;
+
+    @include for-phone-up {
+        font-size: $font-size-tiny;
+    }
+
+    @include for-tablet-portrait-up {
+        font-size: $font-size-small;
+    }
+
+    @include for-tablet-landscape-up {
+        font-size: $font-size-small;
+    }
+
+    @include for-desktop-up {
+        font-size: $font-size-medium;
+    }
 }
