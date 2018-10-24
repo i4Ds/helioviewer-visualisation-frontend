@@ -618,46 +618,7 @@ g.highcharts-series,
     stroke-width: 1px;
 }
 
-.highcharts-button {
-    fill: none;
-    stroke: $color-secondary-light;
-    cursor: pointer;
-    stroke-width: 1;
-    transition: fill 250ms;
-}
-
-.highcharts-button text {
-    fill: $color-secondary-text;
-}
-
-.highcharts-button-hover {
-    transition: fill 0ms;
-    fill: $color-secondary-light;
-    stroke: $color-secondary-light;
-}
-
-.highcharts-button-hover text {
-    fill: $color-secondary-dark;
-}
-
-.highcharts-button-pressed {
-    font-weight: bold;
-    fill: $color-secondary-light;
-    stroke: $color-secondary-light;
-}
-
-.highcharts-button-pressed text {
-    fill: $color-secondary-dark;
-    font-weight: bold;
-}
-
-.highcharts-button-disabled text {
-    fill: $color-secondary-dark;
-}
-
-.highcharts-range-selector-buttons .highcharts-button {
-    stroke-width: $range-selector-button-border;
-}
+@import "./highcharts/button";
 
 .highcharts-reset-zoom {
     @if $hide-reset-zoom-button == true {

@@ -1,12 +1,15 @@
 import Highcharts from 'highcharts/js/highcharts'
 import Exporting from 'highcharts/modules/exporting'
-import { timelineData } from '../../modules/loader'
+import {timelineData} from '../../modules/loader'
 import SolarImagePreview from 'components/SolarImage'
 import Config from '../../Config'
 
 Exporting(Highcharts)
 
 const labelFluxXPosition = -25
+
+const timelineWidth = 1
+const timelineHeight = 0.45
 
 let chart
 let moving = false
@@ -20,7 +23,7 @@ let toDateStack = []
 
 const afterSetExtremes = event => {
     loadingData = true
-    chart.showLoading('Loading data from server...')
+    if (chart !== undefined && chart !== null) chart.showLoading('Loading data from server...')
 
     if (event && 'undefined' !== typeof event.userMin) {
         fromDate = Math.floor(event.userMin)
@@ -65,8 +68,9 @@ const removeZoomFromStack = () => {
 const resetZoom = () => {
     if (!isZoomedIn() || loadingData) return false
 
-    if (fromDateStack.length > 1) [fromDate, toDate] = removeZoomFromStack()
-    else {
+    if (fromDateStack.length > 1) {
+        [fromDate, toDate] = removeZoomFromStack()
+    } else {
         fromDate = Config.minDate
         toDate = Config.maxDate
         fromDateStack = []
@@ -119,7 +123,7 @@ const moveForward = () => {
 
     if (toDate > Config.maxDate) {
         alert(
-            'Cannot move forward anymore because there is no more data available, try to zoom in and then move forward.'
+            'Cannot move forward anymore because there is no more data available, try to zoom in and then move forward.',
         )
         return false
     }
@@ -131,13 +135,23 @@ const moveForward = () => {
     return false
 }
 
+window.onresize = event => {
+    let width = window.innerWidth * timelineWidth
+    let height = window.innerHeight * timelineHeight
+
+    if (chart === undefined || chart === null) return
+
+    chart.setSize(width, height, true)
+}
+
 const Chart = container => {
     return timelineData(fromDate, toDate).then(
         data =>
             (chart = Highcharts.chart(container, {
                 chart: {
                     animation: false,
-                    height: 500,
+                    width: window.innerWidth * timelineWidth,
+                    height: window.innerHeight * timelineHeight,
                     marginLeft: 120,
                     marginRight: 10,
                     zoomType: 'x',
@@ -259,18 +273,19 @@ const Chart = container => {
                         point: {
                             events: {
                                 click() {
-                                    if (Highcharts.dateFormat('%Y', this.x) < 2010)
+                                    if (Highcharts.dateFormat('%Y', this.x) < 2010) {
                                         document.getElementById('preview').innerHTML = SolarImagePreview(
                                             Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
                                             Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SOHO', this.x),
-                                            'SOHO,EIT,EIT'
+                                            'SOHO,EIT,EIT',
                                         )
-                                    else
+                                    } else {
                                         document.getElementById('preview').innerHTML = SolarImagePreview(
                                             Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
                                             Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SDO ', this.x),
-                                            'SDO,AIA,AIA'
+                                            'SDO,AIA,AIA',
                                         )
+                                    }
                                 },
                             },
                         },
@@ -300,22 +315,6 @@ const Chart = container => {
                             text: '<',
                             onclick() {
                                 moveBack()
-                            },
-                        },
-                    ],
-                },
-                responsive: {
-                    rules: [
-                        {
-                            condition: {
-                                maxWidth: 500,
-                            },
-                            chartOptions: {
-                                chart: {
-                                    height: 300,
-                                    marginLeft: 100,
-                                    marginRight: 5,
-                                },
                             },
                         },
                     ],
