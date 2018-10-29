@@ -1,6 +1,6 @@
 import Highcharts from 'highcharts/js/highcharts'
 import Exporting from 'highcharts/modules/exporting'
-import {timelineData} from '../../modules/loader'
+import { timelineData } from '../../modules/loader'
 import SolarImagePreview from 'components/SolarImage'
 import Config from '../../Config'
 
@@ -12,6 +12,7 @@ const timelineWidth = 1
 const timelineHeight = 0.45
 
 let chart
+let timeline
 let moving = false
 let loadingData = false
 let fromDate = Config.minDate
@@ -20,6 +21,69 @@ let toDate = Config.maxDate
 // use two stacks to save zoom boundary history
 let fromDateStack = []
 let toDateStack = []
+
+// credit: http://www.javascriptkit.com/javatutors/touchevents2.shtml
+const swipedetect = (el, callback) => {
+    var touchsurface = el,
+        swipedir,
+        startX,
+        startY,
+        distX,
+        distY,
+        threshold = 150, // required min distance traveled to be considered swipe
+        restraint = 100, // maximum distance allowed at the same time in perpendicular direction
+        allowedTime = 300, // maximum time allowed to travel that distance
+        elapsedTime,
+        startTime,
+        defaultCallback = swipedir => {},
+        handleswipe = callback || defaultCallback
+
+    touchsurface.addEventListener(
+        'touchstart',
+        e => {
+            let touchobj = e.changedTouches[0]
+            swipedir = 'none'
+            startX = touchobj.pageX
+            startY = touchobj.pageY
+            startTime = new Date().getTime() // record time when finger first makes contact with surface
+            e.preventDefault()
+        },
+        false
+    )
+
+    touchsurface.addEventListener(
+        'touchmove',
+        e => {
+            e.preventDefault() // prevent scrolling when inside DIV
+        },
+        false
+    )
+
+    touchsurface.addEventListener(
+        'touchend',
+        e => {
+            var touchobj = e.changedTouches[0]
+            distX = touchobj.pageX - startX // get horizontal dist traveled by finger while in contact with surface
+            distY = touchobj.pageY - startY // get vertical dist traveled by finger while in contact with surface
+            elapsedTime = new Date().getTime() - startTime // get time elapsed
+            if (elapsedTime <= allowedTime)
+                if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) {
+                    /*
+                     * first condition for awipe met
+                     * 2nd condition for horizontal swipe met
+                     */
+                    swipedir = distX < 0 ? 'left' : 'right' // if dist traveled is negative, it indicates left swipe
+                } else if (Math.abs(distY) >= threshold && Math.abs(distX) <= restraint) {
+                    // 2nd condition for vertical swipe met
+                    swipedir = distY < 0 ? 'up' : 'down' // if dist traveled is negative, it indicates up swipe
+                }
+
+            handleswipe(swipedir)
+            e.preventDefault()
+        },
+        false
+    )
+}
 
 const afterSetExtremes = event => {
     loadingData = true
@@ -68,9 +132,8 @@ const removeZoomFromStack = () => {
 const resetZoom = () => {
     if (!isZoomedIn() || loadingData) return false
 
-    if (fromDateStack.length > 1) {
-        [fromDate, toDate] = removeZoomFromStack()
-    } else {
+    if (fromDateStack.length > 1) [fromDate, toDate] = removeZoomFromStack()
+    else {
         fromDate = Config.minDate
         toDate = Config.maxDate
         fromDateStack = []
@@ -123,7 +186,7 @@ const moveForward = () => {
 
     if (toDate > Config.maxDate) {
         alert(
-            'Cannot move forward anymore because there is no more data available, try to zoom in and then move forward.',
+            'Cannot move forward anymore because there is no more data available, try to zoom in and then move forward.'
         )
         return false
     }
@@ -133,15 +196,6 @@ const moveForward = () => {
     moving = false
 
     return false
-}
-
-window.onresize = event => {
-    let width = window.innerWidth * timelineWidth
-    let height = window.innerHeight * timelineHeight
-
-    if (chart === undefined || chart === null) return
-
-    chart.setSize(width, height, true)
 }
 
 const Chart = container => {
@@ -155,6 +209,34 @@ const Chart = container => {
                     marginLeft: 120,
                     marginRight: 10,
                     zoomType: 'x',
+                    events: {
+                        load: event => {
+                            timeline = document.getElementById('timeline')
+
+                            swipedetect(timeline, swipedir => {
+                                if (swipedir === 'left') {
+                                    moveForward()
+                                    console.warn('swipe left')
+                                    return
+                                }
+
+                                if (swipedir === 'right') {
+                                    moveBack()
+                                    console.warn('swipe right')
+                                    return
+                                }
+                            })
+
+                            window.onresize = () => {
+                                let width = window.innerWidth * timelineWidth
+                                let height = window.innerHeight * timelineHeight
+
+                                if (chart === undefined || chart === null) return
+
+                                chart.setSize(width, height, true)
+                            }
+                        },
+                    },
                 },
                 tooltip: {
                     crosshairs: [true, false],
@@ -167,7 +249,12 @@ const Chart = container => {
                         afterSetExtremes,
                     },
                     type: 'datetime',
-                    dateTimeLabelFormats: {},
+                    dateTimeLabelFormats: {
+                        day: '%d. %b \'%y',
+                        week: '%d. %b \'%y',
+                        month: '%b \'%y',
+                        year: '%Y',
+                    },
                 },
                 title: {
                     text: 'Solar Activity Timeline',
@@ -273,19 +360,18 @@ const Chart = container => {
                         point: {
                             events: {
                                 click() {
-                                    if (Highcharts.dateFormat('%Y', this.x) < 2010) {
+                                    if (Highcharts.dateFormat('%Y', this.x) < 2010)
                                         document.getElementById('preview').innerHTML = SolarImagePreview(
                                             Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
                                             Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SOHO', this.x),
-                                            'SOHO,EIT,EIT',
+                                            'SOHO,EIT,EIT'
                                         )
-                                    } else {
+                                    else
                                         document.getElementById('preview').innerHTML = SolarImagePreview(
                                             Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
                                             Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SDO ', this.x),
-                                            'SDO,AIA,AIA',
+                                            'SDO,AIA,AIA'
                                         )
-                                    }
                                 },
                             },
                         },
@@ -301,18 +387,21 @@ const Chart = container => {
                     buttons: [
                         {
                             text: 'Zoom Out',
+                            className: 'reset-zoom',
                             onclick() {
                                 resetZoom()
                             },
                         },
                         {
-                            text: '>',
+                            text: '--->',
+                            className: 'move-forward',
                             onclick() {
                                 moveForward()
                             },
                         },
                         {
-                            text: '<',
+                            text: '<---',
+                            classname: 'move-back',
                             onclick() {
                                 moveBack()
                             },

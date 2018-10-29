@@ -10,7 +10,11 @@ import Config from '../Config'
 export const timelineData = (from, to) => {
     let localTimelineData = window.localStorage.getItem('timeline-json-data')
     let initialData = from === Config.minDate && to === Config.maxDate
-    let useLocalData = initialData && localTimelineData !== undefined && localTimelineData !== null
+    let useLocalData =
+        initialData &&
+        localTimelineData !== undefined &&
+        localTimelineData !== null &&
+        localTimelineData.length > window.innerWidth
 
     if (useLocalData) return Promise.resolve(JSON.parse(localTimelineData))
 
