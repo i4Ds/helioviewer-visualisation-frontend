@@ -1,6 +1,6 @@
 import Highcharts from 'highcharts/js/highcharts'
 import Exporting from 'highcharts/modules/exporting'
-import {timelineData} from '../../modules/loader'
+import { timelineData } from '../../modules/loader'
 import SolarImagePreview from 'components/SolarImage'
 import Config from '../../Config'
 
@@ -35,8 +35,7 @@ const swipedetect = (el, callback) => {
         allowedTime = 300, // maximum time allowed to travel that distance
         elapsedTime,
         startTime,
-        defaultCallback = swipedir => {
-        },
+        defaultCallback = swipedir => {},
         handleswipe = callback || defaultCallback
 
     touchsurface.addEventListener(
@@ -49,7 +48,7 @@ const swipedetect = (el, callback) => {
             startTime = new Date().getTime() // record time when finger first makes contact with surface
             e.preventDefault()
         },
-        false,
+        false
     )
 
     touchsurface.addEventListener(
@@ -57,7 +56,7 @@ const swipedetect = (el, callback) => {
         e => {
             e.preventDefault() // prevent scrolling when inside DIV
         },
-        false,
+        false
     )
 
     touchsurface.addEventListener(
@@ -67,7 +66,7 @@ const swipedetect = (el, callback) => {
             distX = touchobj.pageX - startX // get horizontal dist traveled by finger while in contact with surface
             distY = touchobj.pageY - startY // get vertical dist traveled by finger while in contact with surface
             elapsedTime = new Date().getTime() - startTime // get time elapsed
-            if (elapsedTime <= allowedTime) {
+            if (elapsedTime <= allowedTime)
                 if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) {
                     /*
                      * first condition for awipe met
@@ -78,12 +77,11 @@ const swipedetect = (el, callback) => {
                     // 2nd condition for vertical swipe met
                     swipedir = distY < 0 ? 'up' : 'down' // if dist traveled is negative, it indicates up swipe
                 }
-            }
 
             handleswipe(swipedir)
             e.preventDefault()
         },
-        false,
+        false
     )
 }
 
@@ -134,9 +132,8 @@ const removeZoomFromStack = () => {
 const resetZoom = () => {
     if (!isZoomedIn() || loadingData) return false
 
-    if (fromDateStack.length > 1) {
-        [fromDate, toDate] = removeZoomFromStack()
-    } else {
+    if (fromDateStack.length > 1) [fromDate, toDate] = removeZoomFromStack()
+    else {
         fromDate = Config.minDate
         toDate = Config.maxDate
         fromDateStack = []
@@ -189,7 +186,7 @@ const moveForward = () => {
 
     if (toDate > Config.maxDate) {
         alert(
-            'Cannot move forward anymore because there is no more data available, try to zoom in and then move forward.',
+            'Cannot move forward anymore because there is no more data available, try to zoom in and then move forward.'
         )
         return false
     }
@@ -363,19 +360,18 @@ const Chart = container => {
                         point: {
                             events: {
                                 click() {
-                                    if (Highcharts.dateFormat('%Y', this.x) < 2010) {
+                                    if (Highcharts.dateFormat('%Y', this.x) < 2010)
                                         document.getElementById('preview').innerHTML = SolarImagePreview(
                                             Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
-                                            Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SOHO', this.x),
-                                            'SOHO,EIT,EIT',
+                                            Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Spacecraft: SOHO', this.x),
+                                            'SOHO,EIT,EIT'
                                         )
-                                    } else {
+                                    else
                                         document.getElementById('preview').innerHTML = SolarImagePreview(
                                             Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
-                                            Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Satellite: SDO ', this.x),
-                                            'SDO,AIA,AIA',
+                                            Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Spacecraft: SDO ', this.x),
+                                            'SDO,AIA,AIA'
                                         )
-                                    }
                                 },
                             },
                         },

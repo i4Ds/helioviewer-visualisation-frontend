@@ -1,10 +1,6 @@
 import Chart from './Chart'
 import style from './style'
 
-const zoomBackId = 'zoom-back'
-const moveBackId = 'move-back'
-const moveForwardId = 'move-forward'
-
 /**
  * Timeline component, try to keep all timeline related code here so it can eventually be exported to the helioviewer website
  *
