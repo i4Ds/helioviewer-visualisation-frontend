@@ -14,7 +14,7 @@ let hours = ('0' + timestamp.getUTCHours()).substr(-2)
 let minutes = ('0' + timestamp.getUTCMinutes()).substr(-2)
 
 let timeParam = year + '-' + month + '-' + date + 'T' + hours + ':' + minutes + ':00Z'
-let timeDisplay = year + '/' + month + '/' + date + ' ' + hours + ':' + minutes + ':00 UTC - Satellite: SDO'
+let timeDisplay = year + '/' + month + '/' + date + ' ' + hours + ':' + minutes + ':00 UTC - Spacecraft: SDO'
 
 document.getElementById('timeline').innerHTML = TimelineMarkup()
 document.getElementById('preview').innerHTML = SolarImagePreview(timeParam, timeDisplay, 'SDO,AIA,AIA')
