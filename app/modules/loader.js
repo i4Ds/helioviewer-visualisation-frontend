@@ -22,7 +22,6 @@ export const timelineData = (from, to) => {
     return fetch(url)
         .then(response => response.json())
         .then(json => {
-            console.log(json)
             if (initialData) window.localStorage.setItem('timeline-json-data', JSON.stringify(json))
 
             return json
