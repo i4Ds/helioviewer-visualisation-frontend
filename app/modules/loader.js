@@ -22,7 +22,7 @@ export const timelineData = (from, to) => {
 
     if (useLocalData) return Promise.resolve(JSON.parse(localTimelineData))
 
-    const url = 'http://147.86.8.82/api/?from=' + from + '&to=' + to + '&points=' + 2 * window.innerWidth
+    const url = 'https://heliotime.org/api/?from=' + from + '&to=' + to + '&points=' + 2 * window.innerWidth
     return fetch(url)
         .then(response => response.json())
         .then(json => {
