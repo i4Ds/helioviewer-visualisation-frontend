@@ -9,8 +9,7 @@ import Config from '../Config'
  */
 export const timelineData = (from, to) => {
     let localTimelineDataTimestamp = window.localStorage.getItem('timeline-cache-timestamp')
-    let timelineCacheTimestamp = new Date(localTimelineDataTimestamp)
-    let cacheTimeout = 1000 * 60 * 60 * 24
+    let timelineCacheTimestamp = new Date(parseInt(localTimelineDataTimestamp)).getTime()
     let localTimelineData = window.localStorage.getItem('timeline-json-data')
     let initialData = from === Config.minDate && to === Config.maxDate
     let useLocalData =
@@ -18,7 +17,7 @@ export const timelineData = (from, to) => {
         localTimelineData !== undefined &&
         localTimelineData !== null &&
         localTimelineData.length > window.innerWidth &&
-        new Date().getTime() > timelineCacheTimestamp + cacheTimeout
+        new Date().getTime() < timelineCacheTimestamp + Config.cacheTimeout
 
     if (useLocalData) return Promise.resolve(JSON.parse(localTimelineData))
 
