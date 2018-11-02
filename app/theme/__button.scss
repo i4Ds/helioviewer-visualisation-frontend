@@ -18,4 +18,20 @@
     &:active {
         box-shadow: 0 0 0 1px $color-secondary-dark;
     }
+
+    @include for-phone-up {
+        font-size: $font-size-small;
+    }
+
+    @include for-tablet-portrait-up {
+        font-size: $font-size-small;
+    }
+
+    @include for-tablet-landscape-up {
+        font-size: $font-size-medium;
+    }
+
+    @include for-desktop-up {
+        font-size: $font-size-default;
+    }
 }
