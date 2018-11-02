@@ -3,7 +3,8 @@
 
 .previewContainer {
     text-align: center;
-    padding: 2px 2px 2px 2px;
+    padding-top: 0.5vh;
+    padding-bottom: 0.5vh;
 }
 
 .solarImageContainer {
@@ -41,43 +42,79 @@
 .time {
     color: $color-primary-text;
     z-index: 3;
-    padding: 0.5em 0.5em 0.5em 0.5em;
+    padding: 0.5em;
+
+    @include for-phone-up {
+        font-size: $font-size-tiny;
+        padding: 0.5em;
+    }
+
+    @include for-tablet-portrait-up {
+        font-size: $font-size-small;
+        padding: 0.5em;
+    }
+
+    @include for-tablet-landscape-up {
+        font-size: $font-size-medium;
+        padding: 0.5em;
+    }
+
+    @include for-desktop-up {
+        font-size: $font-size-default;
+        padding: 0.5em;
+    }
+
+    @include for-desktop-wide-up {
+        font-size: $font-size-medium;
+        padding: 0.1em 0.1em 0em;
+    }
 }
 
 .button {
     @extend %base-button;
-    padding: 0.3em 0.3em 0.3em 0.3em;
     z-index: 3;
+    font-size: $font-size-default;
+    width: 20vw;
+    margin-right: 40vw;
+    margin-left: 40vw;
+    padding: 0.5em;
 
     @include for-phone-up {
-        $width: 80%;
-        $center-margin: (100% - $width) / 2;
-        width: $width;
-        margin-left: $center-margin;
-        margin-right: $center-margin;
+        width: 80vw;
+        margin-right: 10vw;
+        margin-left: 10vw;
+        font-size: $font-size-small;
     }
 
     @include for-tablet-portrait-up {
-        $width: 60%;
-        $center-margin: (100% - $width) / 2;
-        width: $width;
-        margin-left: $center-margin;
-        margin-right: $center-margin;
+        width: 60vw;
+        margin-right: 20vw;
+        margin-left: 20vw;
+        font-size: $font-size-small;
+        padding: 0.5em;
     }
 
     @include for-tablet-landscape-up {
-        $width: 40%;
-        $center-margin: (100% - $width) / 2;
-        width: $width;
-        margin-left: $center-margin;
-        margin-right: $center-margin;
+        width: 40vw;
+        margin-right: 30vw;
+        margin-left: 30vw;
+        font-size: $font-size-medium;
+        padding: 0.5em;
     }
 
     @include for-desktop-up {
-        $width: 20%;
-        $center-margin: (100% - $width) / 2;
-        width: $width;
-        margin-left: $center-margin;
-        margin-right: $center-margin;
+        width: 20vw;
+        margin-right: 40vw;
+        margin-left: 40vw;
+        font-size: $font-size-default;
+        padding: 0.5em;
+    }
+
+    @include for-desktop-wide-up {
+        padding: 0.1em;
+        width: 20vw;
+        margin-right: 40vw;
+        margin-left: 40vw;
+        font-size: $font-size-medium;
     }
 }

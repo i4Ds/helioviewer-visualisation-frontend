@@ -34,33 +34,33 @@ $color-secondary-divider: #BDBDBD;
 // options
 $hide-reset-zoom-button: true;
 
-// sizes
-$phone: 0em;
-$tablet-portrait: 33em;
-$tablet-landscape: 50em;
-$desktop: 66em;
-
 // media queries
 @mixin for-phone-up {
-    @media (min-width: $phone) {
+    @media screen and (min-width: 0em) {
         @content;
     }
 }
 
 @mixin for-tablet-portrait-up {
-    @media (min-width: $tablet-portrait) {
+    @media screen and (min-width: 33em) {
         @content;
     }
 }
 
 @mixin for-tablet-landscape-up {
-    @media (min-width: $tablet-landscape) {
+    @media screen and (min-width: 50em) {
         @content;
     }
 }
 
 @mixin for-desktop-up {
-    @media (min-width: $desktop) {
+    @media screen and (min-width: 66em) {
+        @content;
+    }
+}
+
+@mixin for-desktop-wide-up {
+    @media screen and (min-width: 75em) and (max-height: 55em) {
         @content;
     }
 }
