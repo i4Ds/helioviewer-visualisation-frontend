@@ -4,7 +4,7 @@
 $colors: #1976D2 !default;
 
 // Chart background, point stroke for markers and columns etc
-$background-color: #000000 !default;
+$background-color: none !default;
 
 // Neutral colors, grayscale by default. The default colors are defined by mixing the 
 // background-color with neutral, with a weight corresponding to the number in the name.
@@ -107,7 +107,7 @@ $scrollbar-track-border: $neutral-color-5 !default;
 }
 
 .highcharts-plot-border, .highcharts-plot-background {
-    fill: none;
+    fill: $background-color;
 }
 
 .highcharts-label-box {

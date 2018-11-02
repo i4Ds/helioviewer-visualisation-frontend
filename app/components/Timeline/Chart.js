@@ -9,7 +9,7 @@ Exporting(Highcharts)
 const labelFluxXPosition = -25
 
 const timelineWidth = 1
-const timelineHeight = 0.45
+const timelineHeight = 0.5
 
 let chart
 let timeline

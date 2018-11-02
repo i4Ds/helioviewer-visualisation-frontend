@@ -2,8 +2,6 @@
 @import '../../theme/__button';
 
 .previewContainer {
-    min-width: 100vw;
-    max-height: 45vh;
     text-align: center;
     padding: 2px 2px 2px 2px;
 }
@@ -11,7 +9,7 @@
 .solarImageContainer {
     position: relative;
     height: 35vh;
-    width: 100%;
+    width: 100vw;
 }
 
 .flexContainer {
