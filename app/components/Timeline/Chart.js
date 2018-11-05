@@ -30,7 +30,7 @@ const swipedetect = (el, callback) => {
         startY,
         distX,
         distY,
-        threshold = 150, // required min distance traveled to be considered swipe
+        threshold = 50, // required min distance traveled to be considered swipe
         restraint = 100, // maximum distance allowed at the same time in perpendicular direction
         allowedTime = 300, // maximum time allowed to travel that distance
         elapsedTime,
@@ -361,7 +361,6 @@ const Chart = container => {
                         point: {
                             events: {
                                 select() {
-                                    console.log('clicked point: ' + this.x)
                                     if (Highcharts.dateFormat('%Y', this.x) < 2010)
                                         document.getElementById('preview').innerHTML = SolarImagePreview(
                                             Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
