@@ -24,7 +24,7 @@ let toDateStack = []
 
 // credit: http://www.javascriptkit.com/javatutors/touchevents2.shtml
 const swipedetect = (el, callback) => {
-    var touchsurface = el,
+    let touchsurface = el,
         swipedir,
         startX,
         startY,
@@ -36,7 +36,8 @@ const swipedetect = (el, callback) => {
         elapsedTime,
         startTime,
         defaultCallback = swipedir => {},
-        handleswipe = callback || defaultCallback
+        handleswipe = callback || defaultCallback,
+        multitouch = false
 
     touchsurface.addEventListener(
         'touchstart',
@@ -46,7 +47,8 @@ const swipedetect = (el, callback) => {
             startX = touchobj.pageX
             startY = touchobj.pageY
             startTime = new Date().getTime() // record time when finger first makes contact with surface
-            e.preventDefault()
+            if (e.touches.length != 1) multitouch = true
+            else multitouch = false
         },
         false
     )
@@ -62,24 +64,25 @@ const swipedetect = (el, callback) => {
     touchsurface.addEventListener(
         'touchend',
         e => {
-            var touchobj = e.changedTouches[0]
+            const touchobj = e.changedTouches[0]
             distX = touchobj.pageX - startX // get horizontal dist traveled by finger while in contact with surface
             distY = touchobj.pageY - startY // get vertical dist traveled by finger while in contact with surface
             elapsedTime = new Date().getTime() - startTime // get time elapsed
-            if (elapsedTime <= allowedTime)
+            if (elapsedTime <= allowedTime && !multitouch)
                 if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) {
                     /*
                      * first condition for awipe met
                      * 2nd condition for horizontal swipe met
                      */
                     swipedir = distX < 0 ? 'left' : 'right' // if dist traveled is negative, it indicates left swipe
+                    e.preventDefault()
                 } else if (Math.abs(distY) >= threshold && Math.abs(distX) <= restraint) {
                     // 2nd condition for vertical swipe met
                     swipedir = distY < 0 ? 'up' : 'down' // if dist traveled is negative, it indicates up swipe
+                    e.preventDefault()
                 }
 
             handleswipe(swipedir)
-            e.preventDefault()
         },
         false
     )
@@ -216,13 +219,11 @@ const Chart = container => {
                             swipedetect(timeline, swipedir => {
                                 if (swipedir === 'left') {
                                     moveForward()
-                                    console.warn('swipe left')
                                     return
                                 }
 
                                 if (swipedir === 'right') {
                                     moveBack()
-                                    console.warn('swipe right')
                                     return
                                 }
                             })
@@ -359,7 +360,8 @@ const Chart = container => {
                         },
                         point: {
                             events: {
-                                click() {
+                                select() {
+                                    console.log('clicked point: ' + this.x)
                                     if (Highcharts.dateFormat('%Y', this.x) < 2010)
                                         document.getElementById('preview').innerHTML = SolarImagePreview(
                                             Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
