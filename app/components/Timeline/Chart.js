@@ -277,9 +277,11 @@ const Chart = container => {
 
                             if (label.toString().includes('.')) {
                                 decimals = label.split('.')[1].length || 0
+                                if (decimals === undefined) return base + 'error'
                                 exponent = ('-' + decimals).sup()
                             } else {
                                 decimals = label.split('e')[1]
+                                if (decimals === undefined) return base + 'error'
                                 exponent = decimals.sup()
                             }
 
