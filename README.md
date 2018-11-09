@@ -7,21 +7,21 @@ Lightweight frontend for the helioviewer visualisation (timeline)
 - Timeline can be implemented in helioviwer.org main application
 
 # Getting started
-This project uses [Node.js](https://nodejs.org/) and [yarn](https://yarnpkg.com/). Install them, if you have not already done so.
-1. Open a terminal, PowerShell, ... and execute `git clone https://github.com/stby4/helioviewer-visualisation-frontend.git heliovis-front`.
-1. `cd heliovis-front`, `yarn` to install all dependencies
-2. `yarn start` to start development server with [Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/)
+This project uses [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/). Install them, if you have not already done so.
+1. Open a terminal, PowerShell, ... and execute `git clone https://github.com/i4Ds/helioviewer-visualisation-frontend.git heliotime`.
+1. `cd heliotime`, `npm install` to install all dependencies
+2. `npm run start` to start development server with [Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/)
 3. Open your favourite browser and navigate to [localhost:8082](http://localhost:8082)
 
 # Build and test
-## Yarn commands
-- `yarn start` will start a development server on [localhost:8082](http://localhost:8082) with hot module reloading (reloads complete page for now)
-- `yarn run build` builds the app for deployment and creates all necessary artifacts in the _dist_ folder
-- `yarn run lint` starts [ESLint](https://eslint.org/) for linting and [Prettier](https://prettier.io) for clean code
-- `yarn run lint:fix` tries to automatically fix errors
-- `yarn test` exeuctes [Jest tests](http://facebook.github.io/jest/)
-- `yarn test:watch` watches for changed files and executes tests on them automatically
-- `yarn coverage` to execute Jest coverage
+## NPM commands
+- `npm run start` will start a development server on [localhost:8082](http://localhost:8082) with hot module reloading (reloads complete page for now)
+- `npm run build` builds the app for deployment and creates all necessary artifacts in the _dist_ folder
+- `npm run lint` starts [ESLint](https://eslint.org/) for linting and [Prettier](https://prettier.io) for clean code
+- `npm run lint:fix` tries to automatically fix errors
+- `npm run test` exeuctes [Jest tests](http://facebook.github.io/jest/)
+- `npm run test:watch` watches for changed files and executes tests on them automatically
+- `npm run coverage` to execute Jest coverage
 
 ## Tests
 Tests shall be placed close to the files that are beeing tested. Create a folder called `__tests__` and place a file `*-test.js` in there, where * is the filename of the tested file.
@@ -52,5 +52,4 @@ The _app_ directory contains:
 
 # Read
 - https://webpack.js.org/
-- https://yarnpkg.com/
 - https://facebook.github.io/jest/
