@@ -201,6 +201,24 @@ const moveForward = () => {
     return false
 }
 
+const loadSolarImage = event => {
+    console.log(event)
+    let xAxis = event?.xAxis?.pop()?.value || event?.x
+    console.log(xAxis)
+    if (Highcharts.dateFormat('%Y', xAxis) < 2010)
+        document.getElementById('preview').innerHTML = SolarImagePreview(
+            Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', xAxis),
+            Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Spacecraft: SOHO', xAxis),
+            'SOHO,EIT,EIT'
+        )
+    else
+        document.getElementById('preview').innerHTML = SolarImagePreview(
+            Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', xAxis),
+            Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Spacecraft: SDO ', xAxis),
+            'SDO,AIA,AIA'
+        )
+}
+
 const Chart = container => {
     return timelineData(fromDate, toDate).then(
         data =>
@@ -236,6 +254,9 @@ const Chart = container => {
 
                                 chart.setSize(width, height, true)
                             }
+                        },
+                        click: event => {
+                            loadSolarImage(event)
                         },
                     },
                 },
@@ -363,18 +384,7 @@ const Chart = container => {
                         point: {
                             events: {
                                 select() {
-                                    if (Highcharts.dateFormat('%Y', this.x) < 2010)
-                                        document.getElementById('preview').innerHTML = SolarImagePreview(
-                                            Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
-                                            Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Spacecraft: SOHO', this.x),
-                                            'SOHO,EIT,EIT'
-                                        )
-                                    else
-                                        document.getElementById('preview').innerHTML = SolarImagePreview(
-                                            Highcharts.dateFormat('%Y-%m-%dT%H:%M:%SZ', this.x),
-                                            Highcharts.dateFormat('%Y/%m/%d %H:%M:%S UTC - Spacecraft: SDO ', this.x),
-                                            'SDO,AIA,AIA'
-                                        )
+                                    loadSolarImage(this)
                                 },
                             },
                         },

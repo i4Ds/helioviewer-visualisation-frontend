@@ -13,7 +13,7 @@ const SolarImagePreview = (timeParam, timeDisplay, satellite) => {
         <div class="${style.time}">${timeDisplay}</div>
         <a class="${
             style.button
-        }" href="https://helioviewer.org/?date=${timeParam}&imageScale=2&imageLayers=%5BSDO,AIA,171,1,100,0,60,1,${timeParam}" target="_blank">View on helioviewer.org</a>
+        }" href="https://helioviewer.org/?date=${timeParam}&imageScale=2&imageLayers=%5B${satellite},171,1,100,0,60,1,${timeParam}" target="_blank">View on helioviewer.org</a>
     </div>`
 }
 
